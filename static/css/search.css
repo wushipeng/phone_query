@@ -1,0 +1,133 @@
+
+#container {
+
+	margin-top: 5%;
+}
+div.search {
+	padding:10px 0;
+}
+.search form {
+	position:relative;
+	width:300px;
+	margin:0 auto;
+}
+.search input,button {
+	border:none;
+	outline:none;
+}
+.search input {
+	width:100%;
+	height:42px;
+	padding-left:13px;
+}
+.search  button {
+	height:39px;
+	width:53px;
+	cursor:pointer;
+	position:absolute;
+    font-weight: 700;
+}
+
+/*搜索框7*/
+
+.bar7 form {
+	height:42px;
+}
+.bar7 input {
+	width:250px;
+	border-radius:42px;
+	border:2px solid #324B4E;
+	/*background:#F9F0DA;*/
+	transition:0.9s ;
+	float:right;
+}
+.bar7 input:focus {
+	width:300px;
+}
+.bar7 button {
+	/*background:none;*/
+	top:2px;
+	right:-3px;
+    border-left: 1px solid;
+    border-radius: 0 30px 30px 0;
+    background-color: rgba(179, 110, 62, 0.22);
+
+}
+.bar7 button:before {
+
+	font-family:FontAwesome;
+	color:#324b4e;
+}
+.search button:hover{
+    background-color: rgba(179, 110, 62, 0.28);
+}
+.fenji{
+	margin-top:10px;
+	border-top: 1px solid #d4d6cc;
+	border-bottom: 1px solid #d4d6cc;
+	height: 40px;
+	width: 50%;
+	margin-left: 25%;
+	text-align: center;
+	line-height: 40px;
+	font-size: 20px;
+	color: #ab1121;
+	font-weight: bold;
+}
+
+.dropdown-menu a:hover{
+	background-color:#26B99A !important;
+	border-radius: 4px;
+	font-size: 19px;
+}
+.btn-success{
+	background-color: #169F85 !important;
+}
+.btn-success:hover{
+	border-color: #169F85 !important;
+}
+
+.dropdown{
+	background-color: whitesmoke !important;
+	width: 155px !important;
+}
+#my-menu-fancy{
+	background-color: white !important;
+}
+
+.is-active{
+	height: 59px;
+	width: 70px;
+}
+
+.crop{
+	width: 130px;
+}
+
+.login button{
+    border: 1px solid black;
+    width: 90px;
+    height: 30px;
+    background-color: rgba(255, 255, 255, 0);
+    font-weight: bold;
+}
+
+.file{
+    padding-top:12px;
+    padding-left:10px;
+}
+
+.submitFile{
+    float:left;
+    margin-left:10px;
+    margin-top:10px;
+    margin-bottom: 10px;
+    width: 70px;
+    height: 30px;
+    border-radius: 5px;
+    background-color: white;
+    cursor: not-allowed !important;
+}
+input::-webkit-input-placeholder{
+    font-size: 14px !important;
+}

@@ -1,0 +1,344 @@
+{% load mytag %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>电话查询</title>
+
+    <link rel="icon" href="../static/icon/telephone.ico" >
+
+    <link href="../static/css/search.css" rel="stylesheet" type="text/css">
+
+    <!--模板-->
+    <!-- Bootstrap -->
+    <link href="../static/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="../static/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <!-- NProgress -->
+    <link href="../static/vendors/nprogress/nprogress.css" rel="stylesheet">
+    <!-- iCheck -->
+    <link href="../static/vendors/iCheck/skins/flat/green.css" rel="stylesheet">
+
+    <!-- Custom Theme Style -->
+    <link href="../static/build/css/custom.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="../static/page_info/css/zzsc.css" type="text/css">
+
+    <!-- jQuery -->
+    {#    <script src="../static/vendors/jquery/dist/jquery.min.js"></script>#}
+
+    <link href="../static/css/jquery.fancyspinbox.css" rel="stylesheet" type="text/css">
+
+    <!--汉堡下拉-->
+    <link rel="stylesheet" href="../static/css/hamburgers.css">
+    <!--模态对话框-->
+    <link rel="stylesheet" href="../static/modal_dialog/css/reset.css"> <!-- CSS reset -->
+    <link rel="stylesheet" href="../static/modal_dialog/css/style.css"> <!-- Resource style -->
+    <script src="../static/modal_dialog/js/modernizr.js"></script> <!-- Modernizr -->
+
+    <!--JPage-->
+    <link rel="stylesheet" href="../static/jpage/css/jPages.css"/>
+    <link rel="stylesheet" href="../static/jpage/css/animate.css"/>
+
+
+    <!-- DataTables -->
+
+
+
+</head>
+<body style="background-color: #F7F7F7">
+
+
+<div class="hamburger hamburger--vortex" style="margin-left:94%" onclick="login()">
+    <div class="hamburger-box">
+        <div class="hamburger-inner"></div>
+    </div>
+
+
+</div>
+
+<div class="login" style="margin-right:1%;float: right;"  hidden="hidden">
+    <button onclick="window.open('/admin')" >登录</button>
+</div>
+
+<div id="container">
+
+
+
+
+
+    <div style="margin-left: 43%;width: 50%">
+
+        <input type="radio" name="search_type" value="part" onclick="part()">按部门查询
+        <input type="radio" name="search_type" value="keyboard" checked="checked" onclick="keyboard_c()">按关键字查询
+    </div>
+    <!--这是搜索-->
+    <div class="search bar7" >
+        <form action="/" method="post">
+            <input type="text" placeholder="名字或拼音简称" name="crid">
+            <button type="submit">查询</button>
+        </form>
+    </div>
+
+    <div  class="mymenu" style="margin-left: 44.6%;margin-top: 10px;background-color: #f7f7f7" hidden="hidden">
+        <form class="form-aaa" action="/" method="post">
+            <select name="select-part" id="my-menu" style="width: 130px">
+                {% for i in obj_part %}
+                    <option >{{ i }}</option>
+                {% endfor %}
+
+            </select>
+        </form>
+
+    </div>
+</div>
+<!--信息展示-->
+<div class="col-md-6 col-sm-6 col-xs-12" style="margin:20px auto auto 25%">
+
+    <div class="x_panel">
+        <div class="x_title">
+            <div class="x_content">
+
+                <button  style="font-weight: bold"  data-toggle="dropdown" class="btn btn-success dropdown-toggle" type="button" aria-expanded="false" onmouseout="daochu()">导入/导出 <span class="caret"></span>
+                </button>
+                <ul role="menu" class="dropdown-menu">
+                    <li><a href="#" class="cd-popup-trigger">导入电话信息 <i class="fa fa-arrow-down"></i></a>
+                    </li>
+                    <li><a href="#" >导出电话信息 <i class="fa fa-arrow-up"></i></a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="cd-popup" role="alert">
+                <div class="cd-popup-container">
+                    <form  action="/" method="post" enctype="multipart/form-data">
+                        <input type="file" name="file" class="file">
+                        <input type="submit"  class="submitFile" value="提交" disabled="disabled">
+                    </form>
+
+                    <a href="#0" class="cd-popup-close img-replace">Close</a>
+                </div> <!-- cd-popup-container -->
+            </div> <!-- cd-popup -->
+
+            <div class="clearfix"></div>
+        </div>
+        <div class="x_content">
+            <table class="table table-hover display" style="color:black"  >
+                <thead>
+                <tr>
+                    {% for i in t_title %}
+                        <th>{{ i }}</th>
+                    {% endfor %}
+
+                </tr>
+                </thead>
+                <tbody class="part-appear">
+                {% for i in telnumber %}
+                    <tr>
+
+                        <td>{{ i.name }} </td>
+                        <td>{{ i.phone_number }}</td>
+                        <td>{{ i.part }}</td>
+
+                    </tr>
+                {% endfor %}
+                </tbody>
+
+                <tbody class="part-hidden" hidden="hidden" id="itemContainer ">
+                {% for i in telnumber_hidden %}
+                    <tr>
+
+                        <td>{{ i.name }} </td>
+                        <td>{{ i.phone_number }}</td>
+                        <td>{{ i.part }}</td>
+
+                    </tr>
+                {% endfor %}
+
+
+
+
+                </tbody>
+            </table>
+
+        </div>
+
+    </div>
+
+
+    <!--分页-->
+    <div class="pagnation" id="pagnation" >
+
+        {% if tdata.has_previous %}
+            <a href="?page={{ tdata.previous_page_number }}" class="page-prev">上一页</a>
+        {% else %}
+            <a class="page-prev" disabled=true style="cursor: not-allowed">上一页</a>
+        {% endif %}
+
+
+        {% for page in tdata.paginator.page_range %}
+            {% limit_page tdata.number page %}
+        {% endfor %}
+
+        {% if tdata.has_next %}
+            <a href="?page={{ tdata.next_page_number }}" class="page-next">下一页</a>
+        {% else %}
+            <a class="page-next" disabled="disabled" style="cursor: not-allowed"></a>
+        {% endif %}
+
+
+
+        {#            <a href="http://www.xwcms.net"  class="page-prev">上一页</a>#}
+        {#            <a href="http://www.xwcms.net"  class="current">1</a>#}
+        {#            <a href="http://www.xwcms.net" >2</a>#}
+        {##}
+        {##}
+        {#            <a href="http://www.xwcms.net" class="page-next">下一页</a>#}
+        <div style="clear: both"></div>
+    </div>
+    <div class="pagnation-tips">提示：支持键盘“← →”键翻页</div>
+</div>
+
+<div style="clear: both"></div>
+
+<!--各地分机区号-->
+<div class="fenji" >
+    各地分机号
+</div>
+<div class="othercity" style="width: 50%;margin-left: 25%;margin-top:15px;color: #0022ff" >
+    <table   style="width: 70%;margin-left: 15%; text-align: center" >
+        <tbody>
+        <tr>
+            {% for i in citynumber %}
+                {% limit_tr i citynumber %}
+            {% endfor %}
+        </tr>
+        </tbody>
+    </table>
+
+
+</div>
+
+
+
+<script src="../static/modal_dialog/js/jquery-1.11.0.min.js"></script>
+
+
+<!--分页js-->
+<script src="../static/jpage/js/jPages.min.js"></script>
+<script>
+
+    var pagnation=$("#pagnation");
+    $(document).on("keydown",function(event){
+        switch(event.keyCode){
+            case 37 : window.location.href = pagnation.find(".page-prev").attr("href");break;
+            case 39 : window.location.href = pagnation.find(".page-next").attr("href");break
+        }
+    });
+
+
+</script>
+
+<!--模板-->
+
+
+<!-- Bootstrap -->
+<script src="../static/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+
+
+<!-- FastClick -->
+<script src="../static/vendors/fastclick/lib/fastclick.js"></script>
+<!-- NProgress -->
+<script src="../static/vendors/nprogress/nprogress.js"></script>
+<!-- iCheck -->
+<script src="../static/vendors/iCheck/icheck.min.js"></script>
+
+
+
+<!-- Custom Theme Scripts -->
+<script src="../static/build/js/custom.min.js"></script>
+
+{#    <script src="../static/page_info/js/jquery.min.js"></script>#}
+
+<script src="../static/js/jquery.fancyspinbox.js"></script>
+
+
+<script src="../static/js/search.js"></script>
+
+<!--模态对话框-->
+
+<script src="../static/modal_dialog/js/main.js"></script> <!-- Resource jQuery -->
+<script src="../static/js/jquery.fancyspinbox.js"></script>
+
+<script>
+    $('#my-menu').fancyspinbox();
+</script>
+
+<script>
+
+    var forEach=function(t,o,r){if("[object Object]"===Object.prototype.toString.call(t))for(var c in t)Object.prototype.hasOwnProperty.call(t,c)&&o.call(r,t[c],c,t);else for(var e=0,l=t.length;l>e;e++)o.call(r,t[e],e,t)};
+
+    var hamburgers = document.querySelectorAll(".hamburger");
+    if (hamburgers.length > 0) {
+        forEach(hamburgers, function(hamburger) {
+            hamburger.addEventListener("click", function() {
+                this.classList.toggle("is-active");
+            }, false);
+        });
+    }
+</script>
+
+
+<script>
+
+
+
+
+
+
+    $(".dropdown li").click(function() {
+
+        console.log($(this).text());
+        $(".part-hidden").attr("hidden",false);
+        for (var i=0;i<$('.part-hidden  tr').length;i++){
+            if ($($('.part-hidden tr')[i]).children(':last').text() == $(this).text()){
+
+                $($('.part-hidden tr')[i]).attr("hidden",false)
+            }
+            else {
+                $($('.part-hidden tr')[i]).attr("hidden",true)
+            }
+        }
+
+    });
+
+    $('input[type="file"]').change(function () {
+            {#            var xlsx   xls#}
+            var src = $('input[type="file"]').val();
+            var fileType = ["xlsx","xls"];
+            var newFile = src.split(".");
+            newFile = newFile[newFile.length - 1];
+            console.log(newFile);
+            if ($.inArray(newFile,fileType) == -1  ){
+
+                alert("上传的文件必须是Excel表");
+                {#                $('input[type="submit"]').css("cursor","not-allowed").attr("disabled","disabled");#}
+            }
+            else{
+                $('input[type="submit"]').attr("disabled",false);
+                $(".submitFile").css("cssText","cursor:default !important")
+            }
+
+        }
+
+    )
+
+
+
+</script>
+
+</body>
+</html>
+
+
+
